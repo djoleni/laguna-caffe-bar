@@ -106,3 +106,17 @@ document.querySelectorAll('.marquee>div').forEach(t=>{const s=[...t.children].sl
  // pauziraj animacije kad hero nije vidljiv
  new IntersectionObserver(([e])=>hero.classList.toggle('off',!e.isIntersecting)).observe(hero);
 })();
+
+// sakrij #hash iz adrese (meni, dugmad i "Prijavi se" linkovi i dalje glatko skrolaju)
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(!a)return;
+  const id=a.getAttribute('href').slice(1);
+  const t=id?document.getElementById(id):document.body;
+  if(!t)return;
+  e.preventDefault();
+  t.scrollIntoView({behavior:rm?'auto':'smooth'});
+  history.replaceState(null,'',location.pathname+location.search);
+});
+// ako neko dođe na link koji već ima #hash, ukloni ga posle skoka
+if(location.hash)history.replaceState(null,'',location.pathname+location.search);
